@@ -1,26 +1,117 @@
 @import "tailwindcss";
+@plugin "tailwindcss-animate";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* === Yousef Coaching theme tokens === */
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Smooth rounded UI */
+    --radius: 14px;
+
+    /* Light theme */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 9%;
+
+    /* Brand (primary = deep royal blue) */
+    --primary: 226 76% 46%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Accent (success / CTA accent = emerald) */
+    --accent: 160 84% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Secondary surfaces */
+    --secondary: 220 16% 96%;
+    --secondary-foreground: 222 47% 15%;
+
+    /* Muted text */
+    --muted: 220 16% 96%;
+    --muted-foreground: 215 16% 38%;
+
+    /* Danger */
+    --destructive: 0 75% 54%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Elements */
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 9%;
+
+    --border: 214 32% 90%;
+    --input: 214 32% 90%;
+    --ring: var(--primary);
   }
+
+  /* Dark theme (OLED friendly but not pitch black for readability) */
+  .dark {
+    --background: 220 18% 7%;
+    --foreground: 0 0% 98%;
+
+    --card: 220 18% 9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 220 18% 9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 226 76% 62%;
+    --primary-foreground: 220 18% 9%;
+
+    --secondary: 220 16% 16%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 220 16% 16%;
+    --muted-foreground: 216 16% 70%;
+
+    --accent: 160 84% 46%;
+    --accent-foreground: 220 18% 9%;
+
+    --destructive: 0 63% 52%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 16% 20%;
+    --input: 220 16% 20%;
+    --ring: var(--primary);
+  }
+
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground; }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Map tokens to Tailwind v4 color system */
+@theme {
+  --radius: 14px;
+  --radius-lg: calc(var(--radius) - 2px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-sm: calc(var(--radius) - 6px);
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+}
+
+/* === Custom gradient buttons === */
+.btn-gradient {
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+  color: hsl(var(--primary-foreground));
+  transition: filter 0.2s ease;
+}
+.btn-gradient:hover {
+  filter: brightness(0.95);
 }
