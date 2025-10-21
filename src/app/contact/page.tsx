@@ -1,4 +1,11 @@
 import ContactClient from "@/components/contact/ContactClient";
+import WhatsAppButton from "@/components/common/WhatsAppButton";
+
+// ...
+<WhatsAppButton
+  message="مرحباً يوسف! 👋 أريد التواصل معك."
+  label="تواصل عبر واتساب"
+/>;
 
 export const metadata = {
   title: "تواصل معنا | Yousef Coaching",

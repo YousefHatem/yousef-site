@@ -1,26 +1,39 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import WhatsAppButton from "@/components/common/WhatsAppButton";
 
 export const metadata = {
   title: "البرامج | Yousef Coaching",
   description: "خطط تدريب وتغذية مخصصة مع متابعة أسبوعية.",
 };
 
-// Build a wa.me link using your public env var
+// Optional helper (only used if you keep any non-WhatsApp links)
 function wa(message: string) {
-  const raw = process.env.NEXT_PUBLIC_WHATSAPP_PHONE || "972599484644"; // fallback if missing
+  const raw = process.env.NEXT_PUBLIC_WHATSAPP_PHONE || "972599484644"; // fallback
   const phone = raw.startsWith("+") ? raw.slice(1) : raw;
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }
 
-const plans = [
+// Keep it simple: store the WhatsApp message directly and use <WhatsAppButton />
+type Plan = {
+  name: string;
+  price: string;
+  period: string;
+  features: string[];
+  highlighted?: boolean;
+  cta:
+    | { label: string; message: string } // WhatsApp
+    | { label: string; href: string }; // Regular link (rare)
+};
+
+const plans: Plan[] = [
   {
     name: "استشارة سريعة",
     price: "مجانية",
     period: "",
     cta: {
       label: "حجز استشارة",
-      href: wa("مرحباً يوسف! أريد استشارة سريعة 15 دقيقة."),
+      message: "مرحباً يوسف! أريد استشارة سريعة 15 دقيقة.",
     },
     features: [
       "مكالمة تعريفية 15 دقيقة",
@@ -34,7 +47,7 @@ const plans = [
     period: "",
     cta: {
       label: "تواصل للتفاصيل",
-      href: wa("مرحباً يوسف! أريد الاشتراك في التدريب الشخصي PT."),
+      message: "مرحباً يوسف! أريد الاشتراك في التدريب الشخصي PT.",
     },
     features: [
       "جلسات مخصصة وجهًا لوجه",
@@ -49,7 +62,7 @@ const plans = [
     period: "/ شهر",
     cta: {
       label: "ابدأ الآن",
-      href: wa("مرحباً يوسف! أريد الاشتراك في التدريب الأونلاين."),
+      message: "مرحباً يوسف! أريد الاشتراك في التدريب الأونلاين.",
     },
     features: [
       "برنامج تدريب أسبوعي مخصص",
@@ -63,7 +76,7 @@ const plans = [
     period: "/ شهر",
     cta: {
       label: "تواصل واتساب",
-      href: wa("مرحباً يوسف! أريد الاشتراك في باقة VIP."),
+      message: "مرحباً يوسف! أريد الاشتراك في باقة VIP.",
     },
     features: [
       "خطة تدريب + تغذية متقدمة",
@@ -89,7 +102,6 @@ export default function CoachingPage() {
             key={p.name}
             className={`h-full ${p.highlighted ? "ring-1 ring-primary/30" : ""}`}
           >
-            {/* make the inner content stretch and push the button to the bottom */}
             <CardContent className="p-6 flex h-full flex-col gap-4 justify-between">
               <div className="space-y-4">
                 <div className="space-y-1">
@@ -112,22 +124,31 @@ export default function CoachingPage() {
                 </ul>
               </div>
 
-              {/* button pinned to bottom */}
+              {/* Button pinned to bottom */}
               <div className="pt-2 mt-auto">
-                <Button
-                  asChild
-                  className="w-full"
-                  variant={p.highlighted ? "gradient" : "default"}
-                  size="lg"
-                >
-                  <a
-                    href={p.cta.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                {"message" in p.cta ? (
+                  <WhatsAppButton
+                    message={p.cta.message}
+                    label={p.cta.label}
+                    size="lg"
+                    // variant="whatsapp" // if you added this variant
+                  />
+                ) : (
+                  <Button
+                    asChild
+                    className="w-full"
+                    variant={p.highlighted ? "gradient" : "default"}
+                    size="lg"
                   >
-                    {p.cta.label}
-                  </a>
-                </Button>
+                    <a
+                      href={p.cta.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {p.cta.label}
+                    </a>
+                  </Button>
+                )}
               </div>
             </CardContent>
           </Card>
