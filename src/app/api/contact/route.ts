@@ -8,6 +8,8 @@ const schema = z.object({
   email: z.string().email(),
   message: z.string().min(10),
 });
+export const runtime = "nodejs";
+
 
 const resend = new Resend(process.env.RESEND_API_KEY!);
 
