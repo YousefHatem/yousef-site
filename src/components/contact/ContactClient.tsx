@@ -19,7 +19,7 @@ export default function ContactClient() {
   const [sending, setSending] = useState(false);
   const [msg, setMsg] = useState("");
   const whatsappUrl = buildWhatsAppUrl("مرحباً يوسف! 👋 أريد التواصل معك.");
-  const instagramUrl = "https://www.instagram.com/yourusername"; // ← ضع حسابك
+  const instagramUrl = "https://www.instagram.com/yousef_hatem___"; // ← ضع حسابك
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
