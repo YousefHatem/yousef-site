@@ -6,21 +6,22 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createSupabaseServer();
+  const supabase = await createSupabaseServer();
   const {
     data: { user },
-  } = await (await supabase).auth.getUser();
+  } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  // fetch profile to check PT subscription
-  const { data: profile } = await (await supabase)
+  const { data: profile } = await supabase
     .from("profiles")
-    .select("*")
+    .select("role, pt_active")
     .eq("id", user.id)
     .maybeSingle();
 
-  if (!profile?.pt_active) {
-    // show CTA if not subscribed
+  const isAdmin = ["admin", "coach"].includes(profile?.role ?? "");
+  const hasAccess = isAdmin || !!profile?.pt_active;
+
+  if (!hasAccess) {
     return (
       <section className="mx-auto max-w-2xl text-center space-y-4">
         <h1 className="text-2xl font-bold">لوحة التحكم متاحة لمشتركي PT</h1>
