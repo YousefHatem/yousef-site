@@ -41,7 +41,7 @@ const plans = [
       "تصحيح أداء التمارين على الفور",
       "برنامج تدريب + متابعة تغذية",
     ],
-    highlighted: true, // إبراز هذا الخيار
+    highlighted: true,
   },
   {
     name: "تدريب أونلاين",
@@ -83,37 +83,40 @@ export default function CoachingPage() {
         </p>
       </header>
 
-      <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {plans.map((p) => (
           <Card
             key={p.name}
-            className={p.highlighted ? "ring-1 ring-primary/30" : ""}
+            className={`h-full ${p.highlighted ? "ring-1 ring-primary/30" : ""}`}
           >
-            <CardContent className="p-6 flex flex-col gap-4">
-              <div className="space-y-1">
-                <h2 className="text-xl font-bold">{p.name}</h2>
-                <div className="text-3xl font-extrabold">
-                  {p.price}
-                  <span className="text-base text-muted-foreground">
-                    {p.period}
-                  </span>
+            {/* make the inner content stretch and push the button to the bottom */}
+            <CardContent className="p-6 flex h-full flex-col gap-4 justify-between">
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <h2 className="text-xl font-bold">{p.name}</h2>
+                  <div className="text-3xl font-extrabold">
+                    {p.price}
+                    <span className="text-base text-muted-foreground">
+                      {p.period}
+                    </span>
+                  </div>
                 </div>
+
+                <ul className="space-y-2 text-sm">
+                  {p.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2">
+                      <span>✅</span>
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
-              <ul className="space-y-2 text-sm">
-                {p.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2">
-                    <span>✅</span>
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="pt-2">
+              {/* button pinned to bottom */}
+              <div className="pt-2 mt-auto">
                 <Button
                   asChild
-                  // if you added the gradient variant, this will pop nicely:
-                  className={p.highlighted ? "w-full" : "w-full"}
+                  className="w-full"
                   variant={p.highlighted ? "gradient" : "default"}
                   size="lg"
                 >
