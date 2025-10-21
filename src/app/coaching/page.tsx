@@ -6,12 +6,22 @@ export const metadata = {
   description: "خطط تدريب وتغذية مخصصة مع متابعة أسبوعية.",
 };
 
+// Build a wa.me link using your public env var
+function wa(message: string) {
+  const raw = process.env.NEXT_PUBLIC_WHATSAPP_PHONE || "972599484644"; // fallback if missing
+  const phone = raw.startsWith("+") ? raw.slice(1) : raw;
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+}
+
 const plans = [
   {
     name: "استشارة سريعة",
     price: "مجانية",
     period: "",
-    cta: { label: "حجز استشارة", href: "/booking" },
+    cta: {
+      label: "حجز استشارة",
+      href: wa("مرحباً يوسف! أريد استشارة سريعة 15 دقيقة."),
+    },
     features: [
       "مكالمة تعريفية 15 دقيقة",
       "تقييم هدفك الحالي",
@@ -19,22 +29,42 @@ const plans = [
     ],
   },
   {
+    name: "التدريب الشخصي (PT) واحد لواحد",
+    price: "حسب الجلسة",
+    period: "",
+    cta: {
+      label: "تواصل للتفاصيل",
+      href: wa("مرحباً يوسف! أريد الاشتراك في التدريب الشخصي PT."),
+    },
+    features: [
+      "جلسات مخصصة وجهًا لوجه",
+      "تصحيح أداء التمارين على الفور",
+      "برنامج تدريب + متابعة تغذية",
+    ],
+    highlighted: true, // إبراز هذا الخيار
+  },
+  {
     name: "تدريب أونلاين",
     price: "49$",
     period: "/ شهر",
-    cta: { label: "ابدأ الآن", href: "/booking" },
+    cta: {
+      label: "ابدأ الآن",
+      href: wa("مرحباً يوسف! أريد الاشتراك في التدريب الأونلاين."),
+    },
     features: [
       "برنامج تدريب أسبوعي مخصص",
       "خطة تغذية بسيطة ومرنة",
       "متابعة أسبوعية ورسائل دعم",
     ],
-    highlighted: true,
   },
   {
     name: "VIP تحوّل كامل",
     price: "99$",
     period: "/ شهر",
-    cta: { label: "تواصل واتساب", href: "https://wa.me/972599484644" },
+    cta: {
+      label: "تواصل واتساب",
+      href: wa("مرحباً يوسف! أريد الاشتراك في باقة VIP."),
+    },
     features: [
       "خطة تدريب + تغذية متقدمة",
       "مكالمتان شهريًا لتعديل الخطة",
@@ -53,7 +83,7 @@ export default function CoachingPage() {
         </p>
       </header>
 
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
         {plans.map((p) => (
           <Card
             key={p.name}
@@ -82,13 +112,14 @@ export default function CoachingPage() {
               <div className="pt-2">
                 <Button
                   asChild
-                  className={p.highlighted ? "btn-gradient w-full" : "w-full"}
+                  // if you added the gradient variant, this will pop nicely:
+                  className={p.highlighted ? "w-full" : "w-full"}
+                  variant={p.highlighted ? "gradient" : "default"}
+                  size="lg"
                 >
                   <a
                     href={p.cta.href}
-                    target={
-                      p.cta.href.startsWith("http") ? "_blank" : undefined
-                    }
+                    target="_blank"
                     rel="noopener noreferrer"
                   >
                     {p.cta.label}
@@ -102,8 +133,13 @@ export default function CoachingPage() {
 
       <p className="text-center text-sm text-muted-foreground">
         لست متأكدًا أي خطة تناسبك؟{" "}
-        <a className="underline" href="/booking">
-          احجز استشارة مجانية
+        <a
+          className="underline"
+          href={wa("مرحباً يوسف! أحتاج مساعدة في اختيار الخطة المناسبة.")}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          تحدث معي على واتساب
         </a>
         .
       </p>

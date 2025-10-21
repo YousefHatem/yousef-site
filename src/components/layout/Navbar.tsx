@@ -10,7 +10,6 @@ export default function Navbar() {
 const links = [
   { href: "/", label: "الرئيسية" },
   { href: "/coaching", label: "البرامج" }, // ← this one
-  { href: "/booking", label: "الحجز" },
   { href: "/contact", label: "تواصل" },
 ];
 
