@@ -1,4 +1,4 @@
-// src/app/booking/page.tsx
+// src\components\booking\page.tsx
 export const metadata = {
   title: "الحجز | Yousef Coaching",
   description: "تواصل عبر واتساب لحجز موعد.",
