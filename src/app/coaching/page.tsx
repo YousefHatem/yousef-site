@@ -34,7 +34,7 @@ const plans = [
     name: "VIP تحوّل كامل",
     price: "99$",
     period: "/ شهر",
-    cta: { label: "تواصل واتساب", href: "https://wa.me/0000000000" },
+    cta: { label: "تواصل واتساب", href: "https://wa.me/972599484644" },
     features: [
       "خطة تدريب + تغذية متقدمة",
       "مكالمتان شهريًا لتعديل الخطة",
