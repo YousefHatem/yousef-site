@@ -27,14 +27,7 @@ export default function Hero() {
         </p>
         <div className="flex items-center justify-center gap-3">
           <Button className="btn-gradient px-6 py-5 text-base" asChild>
-            <a href="/booking">ابدأ الآن</a>
-          </Button>
-          <Button
-            variant="outline"
-            className="px-6 py-5 text-base border-white/40 text-white hover:bg-white/10"
-            asChild
-          >
-            <a href="/coaching">البرامج</a>
+            <a href="/coaching">ابدأ الآن</a>
           </Button>
         </div>
       </div>
