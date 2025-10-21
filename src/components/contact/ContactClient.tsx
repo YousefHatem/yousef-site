@@ -89,7 +89,7 @@ export default function ContactClient() {
           href={instagramUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 hover:opacity-90 text-white px-6 py-3 rounded-xl font-semibold transition"
+          className="flex items-center gap-2 bg-linear-to-r from-pink-500 via-red-500 to-yellow-500 hover:opacity-90 text-white px-6 py-3 rounded-xl font-semibold transition"
         >
           <Instagram size={20} />
           إنستغرام

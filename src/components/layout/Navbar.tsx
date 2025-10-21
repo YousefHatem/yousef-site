@@ -1,18 +1,48 @@
 "use client";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import ModeToggle from "./ModeToggle";
 
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import ModeToggle from "./ModeToggle";
+import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { createSupabaseBrowser } from "@/lib/supabase-browser";
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const supabase = createSupabaseBrowser();
 
-  // ✅ Define the nav links
-const links = [
-  { href: "/", label: "الرئيسية" },
-  { href: "/coaching", label: "البرامج" }, // ← this one
-  { href: "/contact", label: "تواصل" },
-];
+  const [user, setUser] = useState<unknown>(null);
 
+  // ✅ Check session on mount
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setUser(data.session?.user || null);
+    });
+
+    // ✅ Listen to sign-in/sign-out changes
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user || null);
+      }
+    );
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, [supabase]);
+
+  const links = [
+    { href: "/", label: "الرئيسية" },
+    { href: "/coaching", label: "البرامج" },
+    { href: "/contact", label: "تواصل" },
+  ];
+
+  // ✅ Sign out logic
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+    setUser(null);
+    router.push("/");
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur">
@@ -21,8 +51,8 @@ const links = [
           Yousef Coaching
         </Link>
 
-        <div className="flex gap-2">
-          {/* ✅ Map through the links */}
+        <div className="flex items-center gap-2">
+          {/* Static site links */}
           {links.map((link) => (
             <Link
               key={link.href}
@@ -35,7 +65,33 @@ const links = [
             </Link>
           ))}
 
-          {/* ✅ Theme toggle button */}
+          {/* Auth-based buttons */}
+          {user ? (
+            <>
+              <Link
+                href="/dashboard"
+                className={`px-3 py-2 rounded-md text-sm ${
+                  pathname === "/dashboard" ? "bg-muted" : "hover:bg-muted/60"
+                }`}
+              >
+                لوحة التحكم
+              </Link>
+              <Button variant="outline" size="sm" onClick={handleSignOut}>
+                خروج
+              </Button>
+            </>
+          ) : (
+            <Link
+              href="/login"
+              className={`px-3 py-2 rounded-md text-sm ${
+                pathname === "/login" ? "bg-muted" : "hover:bg-muted/60"
+              }`}
+            >
+              تسجيل الدخول
+            </Link>
+          )}
+
+          {/* Theme toggle */}
           <ModeToggle />
         </div>
       </nav>

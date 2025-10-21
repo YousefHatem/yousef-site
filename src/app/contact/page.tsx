@@ -9,13 +9,13 @@ export default function ContactPage() {
   return (
     <section
       className="relative flex items-center justify-center min-h-[90vh] py-16 px-6 
-                 bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white"
+                 bg-linear-to-b from-gray-950 via-gray-900 to-black text-white"
     >
       {/* background blur light effect */}
       <div className="absolute inset-0 bg-[url('/bg-home.jpg')] bg-cover bg-center opacity-20 blur-sm" />
 
       {/* gradient overlay for depth */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/90" />
+      <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/60 to-black/90" />
 
       {/* content container */}
       <div
@@ -23,7 +23,7 @@ export default function ContactPage() {
                    bg-white/5 border border-white/10 rounded-2xl p-10 shadow-2xl
                    animate-fade-in"
       >
-        <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+        <h1 className="text-4xl md:text-5xl font-extrabold bg-linear-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
           تواصل معنا
         </h1>
 
