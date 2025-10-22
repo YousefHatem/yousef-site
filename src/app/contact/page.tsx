@@ -19,7 +19,7 @@ export default function ContactPage() {
                  bg-linear-to-b from-gray-950 via-gray-900 to-black text-white"
     >
       {/* background blur light effect */}
-      <div className="absolute inset-0 bg-[url('/bg-home.jpg')] bg-cover bg-center opacity-20 blur-sm" />
+      <div className="absolute inset-0 bg-[url('/bg-home.webp')] bg-cover bg-center opacity-20 blur-sm" />
 
       {/* gradient overlay for depth */}
       <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/60 to-black/90" />
