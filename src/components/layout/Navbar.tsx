@@ -2,31 +2,53 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
 import ModeToggle from "./ModeToggle";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
 import { createSupabaseBrowser } from "@/lib/supabase-browser";
+
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createSupabaseBrowser();
 
-  const [user, setUser] = useState<unknown>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  // ✅ Check session on mount
+  // Load session and role on mount and on auth changes
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setUser(data.session?.user || null);
+    let mounted = true;
+
+    const load = async () => {
+      const { data } = await supabase.auth.getSession();
+      const u = data.session?.user ?? null;
+      if (!mounted) return;
+
+      setUser(u);
+      if (u) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", u.id)
+          .maybeSingle();
+
+        setIsAdmin(profile?.role === "admin");
+      } else {
+        setIsAdmin(false);
+      }
+    };
+
+    // initial load
+    load();
+
+    // listen to auth changes
+    const { data: listener } = supabase.auth.onAuthStateChange(() => {
+      load();
     });
 
-    // ✅ Listen to sign-in/sign-out changes
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setUser(session?.user || null);
-      }
-    );
-
     return () => {
+      mounted = false;
       listener.subscription.unsubscribe();
     };
   }, [supabase]);
@@ -37,10 +59,10 @@ export default function Navbar() {
     { href: "/contact", label: "تواصل" },
   ];
 
-  // ✅ Sign out logic
   async function handleSignOut() {
     await supabase.auth.signOut();
     setUser(null);
+    setIsAdmin(false);
     router.push("/");
   }
 
@@ -65,17 +87,33 @@ export default function Navbar() {
             </Link>
           ))}
 
-          {/* Auth-based buttons */}
+          {/* Auth-based nav */}
           {user ? (
             <>
               <Link
                 href="/dashboard"
                 className={`px-3 py-2 rounded-md text-sm ${
-                  pathname === "/dashboard" ? "bg-muted" : "hover:bg-muted/60"
+                  pathname.startsWith("/dashboard")
+                    ? "bg-muted"
+                    : "hover:bg-muted/60"
                 }`}
               >
                 لوحة التحكم
               </Link>
+
+              {isAdmin && (
+                <Link
+                  href="/dashboard/admin"
+                  className={`px-3 py-2 rounded-md text-sm ${
+                    pathname.startsWith("/dashboard/admin")
+                      ? "bg-muted"
+                      : "hover:bg-muted/60"
+                  }`}
+                >
+                  لوحة الإدارة
+                </Link>
+              )}
+
               <Button variant="outline" size="sm" onClick={handleSignOut}>
                 خروج
               </Button>
