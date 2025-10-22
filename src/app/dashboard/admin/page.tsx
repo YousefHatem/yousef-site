@@ -1,6 +1,7 @@
 // src/app/dashboard/admin/page.tsx
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/admin";
+import Link from "next/link";
 
 export default async function AdminHome() {
   const { isAdmin } = await requireAdmin();
@@ -16,9 +17,9 @@ export default async function AdminHome() {
           </a>
         </li>
         <li>
-          <a className="underline" href="/dashboard/admin/assign">
+          <Link className="underline" href="/dashboard/admin/assign">
             إسناد الخطط للمستخدمين
-          </a>
+          </Link>
         </li>
       </ul>
     </section>

@@ -2,6 +2,7 @@
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/admin";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function PlansListPage() {
   const { supabase, isAdmin } = await requireAdmin();
@@ -17,7 +18,7 @@ export default async function PlansListPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">الخطط</h1>
         <Button asChild>
-          <a href="/dashboard/admin/plans/new">خطة جديدة</a>
+          <Link href="/dashboard/admin/plans/new">خطة جديدة</Link>
         </Button>
       </div>
       <ul className="space-y-2">
@@ -29,9 +30,9 @@ export default async function PlansListPage() {
                 {p.section} • {p.is_active ? "نشط" : "متوقف"}
               </div>
             </div>
-            <a className="underline" href={`/dashboard/admin/plans/${p.id}`}>
+            <Link className="underline" href={`/dashboard/admin/plans/${p.id}`}>
               تعديل
-            </a>
+            </Link>
           </li>
         ))}
         {(!plans || plans.length === 0) && (
