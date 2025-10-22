@@ -12,9 +12,9 @@ export default async function AdminHome() {
       <h1 className="text-2xl font-bold">لوحة الإدارة</h1>
       <ul className="list-disc pr-5">
         <li>
-          <a className="underline" href="/dashboard/admin/plans">
+          <Link className="underline" href="/dashboard/admin/plans">
             إدارة الخطط
-          </a>
+          </Link>
         </li>
         <li>
           <Link className="underline" href="/dashboard/admin/assign">
