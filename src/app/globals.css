@@ -131,3 +131,8 @@
   animation: fade-in 0.6s ease-out both;
 }
 
+@layer components {
+  select {
+    @apply border rounded-md p-2 w-full text-black bg-white dark:text-white dark:bg-gray-800;
+  }
+}
